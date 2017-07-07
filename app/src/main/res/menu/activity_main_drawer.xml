@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/navopenImage"
+            android:icon="@drawable/ic_menu_camera"
+            android:title="Open Image" />
+        <item
+            android:id="@+id/navExport"
+            android:icon="@drawable/ic_menu_gallery"
+            android:title="Export" />
+        <item
+            android:id="@+id/navExit"
+            android:icon="@drawable/ic_menu_slideshow"
+            android:title="Exit" />
+    </group>
+
+    <item android:title="Tools">
+        <menu>
+            <item
+                android:id="@+id/navZoomIn"
+                android:icon="@drawable/ic_menu_share"
+                android:title="Zoom In" />
+            <item
+                android:id="@+id/navZoomOut"
+                android:icon="@drawable/ic_menu_send"
+                android:title="Zoom Out" />
+        </menu>
+    </item>
+    <item android:title="Adjustments">
+        <menu>
+            <item
+                android:id="@+id/navRotateR"
+                android:icon="@drawable/ic_menu_share"
+                android:title="Rotate Rigth" />
+            <item
+                android:id="@+id/navRotateL"
+                android:icon="@drawable/ic_menu_send"
+                android:title="Rotate Left" />
+            <item
+                android:id="@+id/navMirrorH"
+                android:icon="@drawable/ic_menu_send"
+                android:title="Rotate Left" />
+            <item
+                android:id="@+id/navMirrorL"
+                android:icon="@drawable/ic_menu_send"
+                android:title="Rotate Left" />
+        </menu>
+    </item>
+    <item android:title="Attune">
+        <menu>
+            <item
+                android:id="@+id/navExposure"
+                android:icon="@drawable/ic_menu_share"
+                android:title="Exposure" />
+            <item
+                android:id="@+id/navContrast"
+                android:icon="@drawable/ic_menu_send"
+                android:title="Contrast" />
+            <item
+                android:id="@+id/navLevels"
+                android:icon="@drawable/ic_menu_send"
+                android:title="Levels" />
+            <item
+                android:id="@+id/navNoice"
+                android:icon="@drawable/ic_menu_send"
+                android:title="Noice" />
+        </menu>
+    </item>
+    <item android:title="Effect">
+        <menu>
+            <item
+                android:id="@+id/navBlur"
+                android:icon="@drawable/ic_menu_share"
+                android:title="Blur" />
+            <item
+                android:id="@+id/navGaussioanBlur"
+                android:icon="@drawable/ic_menu_send"
+                android:title="Gaussian Blur" />
+            <item
+                android:id="@+id/navSharpen"
+                android:icon="@drawable/ic_menu_send"
+                android:title="Sharpen" />
+
+        </menu>
+    </item>
+    <item android:title="Color">
+        <menu>
+            <item
+                android:id="@+id/navColorShift"
+                android:icon="@drawable/ic_menu_share"
+                android:title="Color Shift" />
+            <item
+                android:id="@+id/navBAW"
+                android:icon="@drawable/ic_menu_send"
+                android:title="Black and White" />
+            <item
+                android:id="@+id/navGrey"
+                android:icon="@drawable/ic_menu_send"
+                android:title="GreyScale" />
+            <item
+                android:id="@+id/navWhiteBalance"
+                android:icon="@drawable/ic_menu_send"
+                android:title="Whitebalance" />
+        </menu>
+    </item>
+
+</menu>
