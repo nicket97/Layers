@@ -33,6 +33,8 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 
+import com.example.nicla.layers.transformations.BlackAndWhite;
+
 import java.io.File;
 
 import butterknife.BindView;
@@ -42,6 +44,7 @@ public class MainActivity extends AppCompatActivity
 
     private static final int RESULT_LOAD_IMAGE = 1;
     private static final int MY_PERMISSIONS_REQUEST_READ_CONTACTS = 1;
+    private LoadedImage startIMG = null;
 
 
     @Override
@@ -134,12 +137,21 @@ public class MainActivity extends AppCompatActivity
         if (id == R.id.navopenImage) {
             Intent i = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
             startActivityForResult(i, 1);
-
+        }
+        else if(id == R.id.navBAW){
+            Layers.addLayer(new Layer(new BlackAndWhite(50)));
+            repaint();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private void repaint() {
+
+        ImageView img = (ImageView)findViewById(R.id.imageView2);
+        img.setImageBitmap(Layers.getTransformedImage(startIMG).getBitmapImg());
     }
 
     @Override
@@ -165,19 +177,9 @@ public class MainActivity extends AppCompatActivity
 
 // Draw your old bitmap on it.
             c.drawBitmap(imgMap, 0, 0, new Paint());
-            for(int i = 0; i < imgMap.getWidth();i++){
-                for(int j = 0; j < imgMap.getHeight();j++){
+            startIMG = new LoadedImage(newBmp);
+            repaint();
 
-                    int x = imgMap.getPixel(i,j);
-                    int avg  = ((x >> 16) & 0xFF
-                    + (x >> 8) & 0xFF
-                    + (x >> 0) & 0xFF) / 3;
-                    int color = (avg & 0xff) << 24 | (avg & 0xff) << 16 | (avg & 0xff) << 16 | (avg & 0xff);
-                    newBmp.setPixel(i,j,color);
-                }
-            }
-            ImageView img = (ImageView)findViewById(R.id.imageView2);
-            img.setImageBitmap(newBmp);
 
         }
     }
