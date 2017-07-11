@@ -11,6 +11,10 @@
             android:icon="@drawable/ic_menu_gallery"
             android:title="Export" />
         <item
+            android:id="@+id/navClearLayers"
+            android:icon="@drawable/ic_menu_gallery"
+            android:title="Clear Layers" />
+        <item
             android:id="@+id/navExit"
             android:icon="@drawable/ic_menu_slideshow"
             android:title="Exit" />
@@ -41,11 +45,11 @@
             <item
                 android:id="@+id/navMirrorH"
                 android:icon="@drawable/ic_menu_send"
-                android:title="Rotate Left" />
+                android:title="Mirror H" />
             <item
                 android:id="@+id/navMirrorL"
                 android:icon="@drawable/ic_menu_send"
-                android:title="Rotate Left" />
+                android:title="Mirror L" />
         </menu>
     </item>
     <item android:title="Attune">

@@ -79,4 +79,7 @@ public class RGBColor {
         return new RGBColor(r,g,b);
     }
 
+    public static RGBColor grayRgb(int avr) {
+        return new RGBColor(avr,avr,avr);
+    }
 }

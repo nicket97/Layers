@@ -31,7 +31,7 @@ public class LoadedImage {
 
     public LoadedImage(LoadedImage img){
         this.lImg = img.getBitmapImg();
-        pxImage = new RGBColor[img.getWidth()][img.getHeigth()];
+        pxImage = img.getpxImage();
         for(int i = 0; i < img.getWidth(); i++){
             for(int j = 0; j < img.getHeigth(); j++){
                 pxImage[i][j] = img.getpxImage()[i][j];
@@ -77,9 +77,9 @@ public class LoadedImage {
      */
     public static int getIntFromColor(RGBColor rgb) {
 
-        int R = (int) Math.round(255 * rgb.getRed());
-        int G = (int) Math.round(255 * rgb.getGreen());
-        int B = (int) Math.round(255 * rgb.getBlue());
+        int R = (int) Math.round(rgb.getRed());
+        int G = (int) Math.round(rgb.getGreen());
+        int B = (int) Math.round(rgb.getBlue());
 
         R = (R << 16) & 0x00FF0000;
         G = (G << 8) & 0x0000FF00;
@@ -116,5 +116,6 @@ public class LoadedImage {
 
     public void setPxImage(RGBColor[][] pxImage) {
         this.pxImage = pxImage;
+
     }
 }

@@ -4,6 +4,8 @@ package com.example.nicla.layers;
  * Created by nicla on 2017-07-08.
  */
 
+import android.util.Log;
+
 import java.util.ArrayList;
 
 /**
@@ -26,6 +28,7 @@ public class Layers {
         LoadedImage newImg = new LoadedImage(img);
         for (Layer l : layerStack) {
             newImg = l.getAction().transform(newImg);
+            Log.d("LayerPaint", l.getName());
         }
         return newImg;
     }

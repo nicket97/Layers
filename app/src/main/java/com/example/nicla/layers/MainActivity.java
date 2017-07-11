@@ -34,6 +34,18 @@ import android.widget.Toast;
 
 
 import com.example.nicla.layers.transformations.BlackAndWhite;
+import com.example.nicla.layers.transformations.Blur;
+import com.example.nicla.layers.transformations.ColorShift;
+import com.example.nicla.layers.transformations.Contrast;
+import com.example.nicla.layers.transformations.Exposure;
+import com.example.nicla.layers.transformations.GaussianBlur;
+import com.example.nicla.layers.transformations.Grain;
+import com.example.nicla.layers.transformations.GrayScale;
+import com.example.nicla.layers.transformations.Levels;
+import com.example.nicla.layers.transformations.RotateL;
+import com.example.nicla.layers.transformations.RotateR;
+import com.example.nicla.layers.transformations.Sharpen;
+import com.example.nicla.layers.transformations.WhiteBalance;
 
 import java.io.File;
 
@@ -44,7 +56,8 @@ public class MainActivity extends AppCompatActivity
 
     private static final int RESULT_LOAD_IMAGE = 1;
     private static final int MY_PERMISSIONS_REQUEST_READ_CONTACTS = 1;
-    private LoadedImage startIMG = null;
+    private LoadedImage workingImg = null;
+    private static Uri startImg = null;
 
 
     @Override
@@ -128,7 +141,7 @@ public class MainActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
-    @SuppressWarnings("StatementWithEmptyBody")
+
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
@@ -138,10 +151,67 @@ public class MainActivity extends AppCompatActivity
             Intent i = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
             startActivityForResult(i, 1);
         }
+        else if(id == R.id.navClearLayers){
+            Layers.clear();
+            repaint();
+        }
+        else if(id == R.id.navRotateR){
+            Layers.addLayer(new Layer(new RotateR()));
+            repaint();
+        }
+        else if(id == R.id.navRotateL){
+            Layers.addLayer(new Layer(new RotateL()));
+            repaint();
+        }
+        else if(id == R.id.navExposure){
+            Layers.addLayer(new Layer(new Exposure(-80)));
+            repaint();
+        }
+        else if(id == R.id.navContrast){
+            Layers.addLayer(new Layer(new Contrast(100,0.5)));
+            repaint();
+        }
+        else if(id == R.id.navLevels){
+            Layers.addLayer(new Layer(new Levels(40, 200)));
+            repaint();
+        }
+        else if(id == R.id.navNoice){
+            Layers.addLayer(new Layer(new Grain(50)));
+            repaint();
+        }
+        else if(id == R.id.navBlur){
+            Layers.addLayer(new Layer(new Blur(5)));
+            repaint();
+        }
+        else if(id == R.id.navGaussioanBlur){
+            Layers.addLayer(new Layer(new GaussianBlur(5)));
+            repaint();
+        }
+        else if(id == R.id.navSharpen){
+            Layers.addLayer(new Layer(new Sharpen()));
+            repaint();
+        }
+
+        else if(id == R.id.navColorShift){
+            Layers.addLayer(new Layer(new ColorShift(100,0,0,1)));
+            repaint();
+        }
         else if(id == R.id.navBAW){
             Layers.addLayer(new Layer(new BlackAndWhite(50)));
             repaint();
         }
+        else if(id == R.id.navGrey){
+            Layers.addLayer(new Layer(new GrayScale()));
+            repaint();
+        }
+        else if(id == R.id.navWhiteBalance){
+            Layers.addLayer(new Layer(new WhiteBalance(50)));
+            repaint();
+        }
+
+
+
+
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
@@ -151,7 +221,7 @@ public class MainActivity extends AppCompatActivity
     private void repaint() {
 
         ImageView img = (ImageView)findViewById(R.id.imageView2);
-        img.setImageBitmap(Layers.getTransformedImage(startIMG).getBitmapImg());
+        img.setImageBitmap(Layers.getTransformedImage(workingImg).getBitmapImg());
     }
 
     @Override
@@ -161,6 +231,7 @@ public class MainActivity extends AppCompatActivity
         if (requestCode == RESULT_LOAD_IMAGE && resultCode == RESULT_OK && null != data) {
 
             Uri selectedImage = data.getData();
+            startImg = selectedImage;
             String[] filePathColumn = {MediaStore.Images.Media.DATA};
 
             Cursor cursor = getContentResolver().query(selectedImage,
@@ -171,13 +242,23 @@ public class MainActivity extends AppCompatActivity
             String picturePath = cursor.getString(columnIndex);
             cursor.close();
             Bitmap imgMap = BitmapFactory.decodeFile(picturePath);
-            Bitmap newBmp = Bitmap.createBitmap(imgMap.getWidth(), imgMap.getHeight(), Bitmap.Config.ARGB_8888);
+            /*Bitmap newBmp = Bitmap.createBitmap(imgMap.getWidth(), imgMap.getHeight(), Bitmap.Config.ARGB_8888);
 // Create a canvas  for new bitmap
             Canvas c = new Canvas(newBmp);
 
 // Draw your old bitmap on it.
             c.drawBitmap(imgMap, 0, 0, new Paint());
-            startIMG = new LoadedImage(newBmp);
+            */
+            double scale = 1;
+            if(1080/imgMap.getWidth() < 600/imgMap.getHeight()){
+                scale = (double)1080/imgMap.getWidth();
+            }
+            else{
+                scale = (double)600/imgMap.getHeight();
+            }
+            Log.d("SCALE", "Scale: " + scale);
+            Bitmap newBmp = (Bitmap.createScaledBitmap(imgMap, (int)(imgMap.getWidth()*scale), (int)(imgMap.getHeight()*scale), false));
+            workingImg = new LoadedImage(newBmp);
             repaint();
 
 
