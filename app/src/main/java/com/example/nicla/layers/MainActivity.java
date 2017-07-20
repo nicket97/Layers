@@ -1,6 +1,7 @@
 package com.example.nicla.layers;
 
 import android.Manifest;
+import android.app.Fragment;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -17,6 +18,7 @@ import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.text.Layout;
 import android.util.Log;
@@ -30,9 +32,11 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.Toast;
 
 
+import com.example.nicla.layers.fragments.LayerFragment;
 import com.example.nicla.layers.transformations.BlackAndWhite;
 import com.example.nicla.layers.transformations.Blur;
 import com.example.nicla.layers.transformations.ColorShift;
@@ -58,7 +62,7 @@ public class MainActivity extends AppCompatActivity
     private static final int MY_PERMISSIONS_REQUEST_READ_CONTACTS = 1;
     private LoadedImage workingImg = null;
     private static Uri startImg = null;
-
+    private Class layerFragment = LayerFragment.class
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -220,8 +224,22 @@ public class MainActivity extends AppCompatActivity
 
     private void repaint() {
 
+        showFragment(layerFragment);
         ImageView img = (ImageView)findViewById(R.id.imageView2);
         img.setImageBitmap(Layers.getTransformedImage(workingImg).getBitmapImg());
+    }
+
+    private void showFragment(Class layerFragment) {
+        Fragment fragment = null;
+        try {
+            fragment = (Fragment) layerFragment.newInstance();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.layerRow, layerFragment).commit();
     }
 
     @Override
