@@ -40,7 +40,9 @@ public class Layer {
     public boolean getVisible() {
         return visible;
     }
-
+    public void visible(Boolean b){
+        visible = b;
+    }
     /**
      * Changes the visibility of the layer
      */

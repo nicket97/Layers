@@ -1,8 +1,7 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="com.example.nicla.layers.fragments.LayerFragment">
+    android:layout_height="match_parent">
 
     <LinearLayout
         android:id="@+id/layerRow"
@@ -15,7 +14,6 @@
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_weight="0.1"
-            android:onClick=""
             android:checked="true" />
 
         <TextView

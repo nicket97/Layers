@@ -7,22 +7,15 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.MediaStore;
-import android.support.constraint.ConstraintLayout;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
-import android.text.Layout;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -33,10 +26,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.Toast;
 
 
-import com.example.nicla.layers.fragments.LayerFragment;
 import com.example.nicla.layers.transformations.BlackAndWhite;
 import com.example.nicla.layers.transformations.Blur;
 import com.example.nicla.layers.transformations.ColorShift;
@@ -51,27 +42,32 @@ import com.example.nicla.layers.transformations.RotateR;
 import com.example.nicla.layers.transformations.Sharpen;
 import com.example.nicla.layers.transformations.WhiteBalance;
 
-import java.io.File;
-
 import butterknife.BindView;
+import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-
+    @BindView(R.id.layerView)
+    ListView layerView;
+    @BindView(R.id.imageView2)
+    ImageView img;
+    static MainActivity activity = null;
     private static final int RESULT_LOAD_IMAGE = 1;
     private static final int MY_PERMISSIONS_REQUEST_READ_CONTACTS = 1;
-    private LoadedImage workingImg = null;
+    private static LoadedImage workingImg = null;
     private static Uri startImg = null;
-    private Class layerFragment = LayerFragment.class
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getPermissions();
+        activity = this;
         //layout.setBackgroundColor(Color.BLACK);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        //test
 
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -79,9 +75,14 @@ public class MainActivity extends AppCompatActivity
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
-
+        ButterKnife.bind(this);
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        Layers.addLayer(new Layer(new ColorShift(50,20,10,1)));
+        repaint();
+
+
+
     }
 
     private void getPermissions() {
@@ -222,25 +223,16 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
-    private void repaint() {
+    public void repaint() {
 
-        showFragment(layerFragment);
-        ImageView img = (ImageView)findViewById(R.id.imageView2);
+        if(workingImg != null){
+
         img.setImageBitmap(Layers.getTransformedImage(workingImg).getBitmapImg());
+        }
+        layerView.setAdapter(new LayerViewAdapter(activity, Layers.getLayerStack()));
     }
 
-    private void showFragment(Class layerFragment) {
-        Fragment fragment = null;
-        try {
-            fragment = (Fragment) layerFragment.newInstance();
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        }
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.layerRow, layerFragment).commit();
-    }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

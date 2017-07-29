@@ -27,7 +27,7 @@ public class Layers {
     public static LoadedImage getTransformedImage(LoadedImage img) {
         LoadedImage newImg = new LoadedImage(img);
         for (Layer l : layerStack) {
-            newImg = l.getAction().transform(newImg);
+            if (l.getVisible())newImg = l.getAction().transform(newImg);
             Log.d("LayerPaint", l.getName());
         }
         return newImg;

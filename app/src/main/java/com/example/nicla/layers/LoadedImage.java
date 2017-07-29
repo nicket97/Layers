@@ -30,8 +30,9 @@ public class LoadedImage {
     }
 
     public LoadedImage(LoadedImage img){
-        this.lImg = img.getBitmapImg();
-        pxImage = img.getpxImage();
+        Bitmap newBmp = Bitmap.createScaledBitmap(img.getBitmapImg(), img.getBitmapImg().getWidth(), img.getBitmapImg().getHeight(), false);
+        this.lImg = newBmp;
+        pxImage = new RGBColor[img.getBitmapImg().getWidth()][img.getBitmapImg().getHeight()];
         for(int i = 0; i < img.getWidth(); i++){
             for(int j = 0; j < img.getHeigth(); j++){
                 pxImage[i][j] = img.getpxImage()[i][j];
